@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Citirea fișierului Excel
-df = pd.read_excel("C:\\Users\\admin\\Downloads\\catology\\Data cat personality and predation Cordonnier et al.xlsx")
+df = pd.read_excel("Data cat personality and predation Cordonnier et al.xlsx")
 
 # Verificarea valorilor lipsă
 missing_values = df.isnull().sum()
