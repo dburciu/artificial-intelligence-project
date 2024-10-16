@@ -1,6 +1,6 @@
 import pandas as pd
 
-data = pd.read_excel('cat_personality_data.xlsx')
+data = pd.read_excel('Data cat personality and predation Cordonnier et al.xlsx')
 
 # Get a list of all columns to identify class columns
 attributes = data.columns.tolist()
