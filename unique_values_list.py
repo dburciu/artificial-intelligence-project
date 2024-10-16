@@ -1,0 +1,22 @@
+import pandas as pd
+
+data = pd.read_excel('cat_personality_data.xlsx')
+
+# Get a list of all columns to identify class columns
+attributes = data.columns.tolist()
+
+# Non-numeric columns
+classes = data.select_dtypes(include=['object']).columns.tolist()
+
+for column in attributes:
+    print(f"\nProcessing column: {column}")
+    
+    unique_values = data[column].value_counts()
+    
+    print(f"Total unique values in {column}: {len(unique_values)}")
+    print(unique_values)
+
+    for class_column in classes:
+        if class_column != column: 
+            grouped = data.groupby(class_column)[column].value_counts()
+            print(grouped)
