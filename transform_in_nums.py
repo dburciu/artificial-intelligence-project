@@ -1,11 +1,16 @@
 import pandas as pd
 
-df = pd.read_excel('Data cat personality and predation Cordonnier et al.xlsx')
+def transf_in_nums():
 
-# Non-numeric columns
-non_numeric_columns = df.select_dtypes(exclude=['number'])
+    df = pd.read_excel('Data cat personality and predation Cordonnier et al.xlsx')
 
-for column in non_numeric_columns:
-    df[column] = df[column].astype('category').cat.codes
+    # Non-numeric columns
+    non_numeric_columns = df.select_dtypes(exclude=['number'])
 
-print(df)
+    for column in non_numeric_columns:
+        if (column != "Plus"):
+            df[column] = df[column].astype('category').cat.codes
+
+
+if __name__ == "__main__":
+    print(df)
