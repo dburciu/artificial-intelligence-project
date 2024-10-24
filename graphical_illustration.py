@@ -5,6 +5,24 @@ from deep_translator import GoogleTranslator
 
 data = pd.read_excel('Data cat personality and predation Cordonnier et al.xlsx')
 
+race_dict = {
+"BEN":"Bengal",
+"SBI":"Birman",
+"BRI":"British Shorthair",
+"CHA":"Chartreux",
+"EUR":"European",
+"MCO":"Maine coon",
+"PER":"Persian",
+"RAG":"Ragdoll",
+"SPH":"Sphynx",
+"SAV":"Savannah", #nu exista mentionata SVA
+"ORI":"Sphynx",
+"TUV":"Turkish angora",
+"Autre":"No Breed/ Other",
+"NSP":"Unkown"
+}
+
+data['Race'] = data['Race'].map(race_dict)
 
 for col in data.columns:
     if col != 'Race' and col != 'Row.names' and col != 'Plus':
