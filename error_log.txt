@@ -5,5 +5,13 @@ dtype: int64
 Randuri duplicate 'Row.names':
 [999]
 
-Randuri identice (dupa toate campurile, fara 'Horodateur' si 'Row.names'):
+Randuri identice (search fara campurile 'Horodateur' si 'Row.names'):
 Randurile identice: [2548, 2549]
+Randurile identice: [999, 999]
+Randurile identice: [1222, 1225]
+Randurile identice: [1199, 1219, 1221]
+Randuri identice (search fara campurile 'Horodateur', 'Row.names' si 'Plus'):
+Randurile identice: [2548, 2549]
+Randurile identice: [999, 999]
+Randurile identice: [1222, 1225]
+Randurile identice: [1199, 1219, 1221]
