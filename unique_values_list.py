@@ -22,3 +22,6 @@ def unique_val():
             if class_column != column: 
                 grouped = data.groupby(class_column)[column].value_counts()
                 print(grouped)
+
+if __name__ == "__main__":
+    print(unique_val());

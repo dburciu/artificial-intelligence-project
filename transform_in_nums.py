@@ -11,7 +11,7 @@ def transf_in_nums():
         if (column != "Plus"):
             df[column] = df[column].astype('category').cat.codes
 
-    print(df)
+    return(df)
 
 
 if __name__ == "__main__":
