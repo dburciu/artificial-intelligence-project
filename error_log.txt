@@ -1,38 +1,9 @@
-Valori lipsă pe coloană:
-Row.names         0
-Horodateur        0
-Sexe              0
-Age               0
-Race              0
-Nombre            0
-Logement          0
-Zone              0
-Ext               0
-Obs               0
-Timide            0
-Calme             0
-Effrayé           0
-Intelligent       0
-Vigilant          0
-Perséverant       0
-Affectueux        0
-Amical            0
-Solitaire         0
-Brutal            0
-Dominant          0
-Agressif          0
-Impulsif          0
-Prévisible        0
-Distrait          0
-Abondance         0
-PredOiseau        0
-PredMamm          0
-Plus           2323
+Valori lipsa pe coloane:
+Plus    2323
 dtype: int64
 
-Rânduri duplicate:
-      Row.names              Horodateur Sexe  ... PredOiseau PredMamm Plus
-3143        999 2021-02-18 14:43:20.693    F  ...          0        0  NaN
+Randuri duplicate 'Row.names':
+[999]
 
-[1 rows x 29 columns]
-
+Randuri identice (dupa toate campurile, fara 'Horodateur' si 'Row.names'):
+Randurile identice: [2548, 2549]
