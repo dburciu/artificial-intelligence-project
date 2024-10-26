@@ -1,27 +1,42 @@
 import pandas as pd
 
-def unique_val():
+file_path = 'cat_personality_data.xlsx' 
+df = pd.read_excel(file_path)
 
-    data = pd.read_excel('Data cat personality and predation Cordonnier et al.xlsx')
+columns = df.columns
 
-    # Get a list of all columns to identify class columns
-    attributes = data.columns.tolist()
+results = {}
 
-    # Non-numeric columns
-    classes = data.select_dtypes(include=['object']).columns.tolist()
+# Iterează prin fiecare coloană
+for column in columns:
+    unique_values = df[column].value_counts()
+    results[column] = {
+        'total_values': unique_values.sum(),
+        'frequencies': unique_values.reset_index()  # Resetăm indexul pentru a afișa numele complet
+    }
 
-    for column in attributes:
-        print(f"\nProcessing column: {column}")
-    
-        unique_values = data[column].value_counts()
-    
-        print(f"Total unique values in {column}: {len(unique_values)}")
-        print(unique_values)
+print("FRECVENTA LA NIVEL DE CLASA")
 
-        for class_column in classes:
-            if class_column != column: 
-                grouped = data.groupby(class_column)[column].value_counts()
-                print(grouped)
+for column, data in results.items():
+    print(f"\nAtribut: {column}")
+    print(f"Numărul total de valori distincte: {data['total_values']}")
+    print("Frecvența valorilor:")
+    freq_df = data['frequencies']
+    freq_df.columns = ['Valoare', 'Frecvență']  
+    print(freq_df)
 
-if __name__ == "__main__":
-    print(unique_val());
+print("-------------------")
+print("FRECVENTA LA NIVELUL INTREGULUI FISIER")
+
+for column in df.columns:
+    if column != 'Plus':
+        unique_values = df[column].value_counts()
+        total_values = unique_values.sum()  # Numărul total de valori din fisier
+
+        print(f"\nAtribut: {column}")
+        print(f"Numărul total de valori distincte: {len(unique_values)}")
+        print(f"Numărul total de valori: {total_values}")
+        print("Frecvența valorilor:")
+        
+        for value, frequency in unique_values.items():
+            print(f"{value}: {frequency}")
