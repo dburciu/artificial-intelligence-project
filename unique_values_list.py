@@ -16,11 +16,12 @@ def unique_val():
         unique_values = data[column].value_counts()
     
         print(f"Total unique values in {column}: {len(unique_values)}")
-        print(unique_values)
+        # print(unique_values)
 
         for class_column in classes:
-            if class_column != column: 
+            if class_column != column:
                 grouped = data.groupby(class_column)[column].value_counts()
+                print("---")
                 print(grouped)
 
 if __name__ == "__main__":
