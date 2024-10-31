@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = 'cat_personality_data.xlsx' 
+file_path = 'Data cat personality and predation Cordonnier et al.xlsx'
 df = pd.read_excel(file_path)
 
 columns = df.columns
