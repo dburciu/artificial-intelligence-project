@@ -1,0 +1,714 @@
+Numărul de instanțe pentru fiecare clasă (Race):
+Race
+EUR      1022
+NR        483
+BEN       240
+RAG       217
+MCO       198
+PER       192
+SBI       192
+BRI       166
+Autre     135
+NSP        80
+SPH        76
+ORI        58
+CHA        31
+TUV        28
+SAV        26
+Name: count, dtype: int64
+
+Atrribut: Sexe
+Valori distincte: ['F' 'M' 'NSP']
+Numărul global de valori:
+Sexe
+M      1651
+F      1487
+NSP       6
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Sexe
+Autre  F        70
+       M        65
+BEN    M       123
+       F       117
+BRI    M        91
+       F        75
+CHA    M        19
+       F        12
+EUR    M       523
+       F       497
+       NSP       2
+MCO    M       126
+       F        71
+       NSP       1
+NR     M       250
+       F       232
+       NSP       1
+NSP    M        49
+       F        30
+       NSP       1
+ORI    M        30
+       F        28
+PER    M       108
+       F        84
+RAG    F       110
+       M       106
+       NSP       1
+SAV    M        16
+       F        10
+SBI    F        99
+       M        93
+SPH    F        38
+       M        38
+TUV    F        14
+       M        14
+Name: count, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Age
+Valori distincte: ['Moinsde1' '2a10' '1a2' 'Plusde10']
+Numărul global de valori:
+Age
+2a10        1560
+1a2          617
+Moinsde1     611
+Plusde10     356
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Age     
+Autre  2a10         80
+       Moinsde1     27
+       1a2          21
+       Plusde10      7
+BEN    2a10        107
+       1a2          69
+       Moinsde1     58
+       Plusde10      6
+BRI    2a10         78
+       1a2          41
+       Moinsde1     40
+       Plusde10      7
+CHA    2a10         19
+       Plusde10      6
+       1a2           3
+       Moinsde1      3
+EUR    2a10        518
+       Moinsde1    173
+       Plusde10    171
+       1a2         160
+MCO    2a10         96
+       1a2          56
+       Moinsde1     39
+       Plusde10      7
+NR     2a10        253
+       Plusde10     81
+       Moinsde1     75
+       1a2          74
+NSP    2a10         40
+       1a2          16
+       Moinsde1     15
+       Plusde10      9
+ORI    2a10         27
+       Plusde10     13
+       1a2          10
+       Moinsde1      8
+PER    2a10         98
+       1a2          42
+       Moinsde1     30
+       Plusde10     22
+RAG    2a10         98
+       Moinsde1     65
+       1a2          48
+       Plusde10      6
+SAV    2a10         14
+       1a2           6
+       Moinsde1      6
+SBI    2a10         97
+       Moinsde1     46
+       1a2          39
+       Plusde10     10
+SPH    1a2          27
+       2a10         26
+       Moinsde1     19
+       Plusde10      4
+TUV    2a10          9
+       Moinsde1      7
+       Plusde10      7
+       1a2           5
+Name: count, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Race
+Valori distincte: ['SBI' 'EUR' 'NR' 'MCO' 'BEN' 'NSP' 'PER' 'ORI' 'BRI' 'Autre' 'CHA' 'RAG'
+ 'TUV' 'SPH' 'SAV']
+Numărul global de valori:
+Race
+EUR      1022
+NR        483
+BEN       240
+RAG       217
+MCO       198
+PER       192
+SBI       192
+BRI       166
+Autre     135
+NSP        80
+SPH        76
+ORI        58
+CHA        31
+TUV        28
+SAV        26
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race
+Autre     135
+BEN       240
+BRI       166
+CHA        31
+EUR      1022
+MCO       198
+NR        483
+NSP        80
+ORI        58
+PER       192
+RAG       217
+SAV        26
+SBI       192
+SPH        76
+TUV        28
+Name: count, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Nombre
+Valori distincte: ['3' '1' '4' '2' 'Plusde5' '5']
+Numărul global de valori:
+Nombre
+1          1282
+2           974
+3           364
+Plusde5     225
+4           202
+5            97
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Nombre 
+Autre  1          51
+       2          29
+       3          27
+       Plusde5    14
+       4          11
+                  ..
+TUV    2           7
+       3           4
+       4           2
+       5           2
+       Plusde5     2
+Name: count, Length: 89, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Timide
+Valori distincte: [1 4 3 2 5]
+Numărul global de valori:
+Timide
+1    1081
+4     704
+2     649
+3     437
+5     273
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Timide
+Autre  1         51
+       2         29
+       4         23
+       3         20
+       5         12
+                 ..
+TUV    1         10
+       4          7
+       2          5
+       3          4
+       5          2
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Calme
+Valori distincte: [1 4 2 5 3]
+Numărul global de valori:
+Calme
+4    1172
+5     678
+2     546
+3     528
+1     220
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Calme
+Autre  4        51
+       5        32
+       3        25
+       2        24
+       1         3
+                ..
+TUV    4        16
+       3         4
+       5         4
+       1         2
+       2         2
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Effrayé
+Valori distincte: [1 3 2 4 5]
+Numărul global de valori:
+Effrayé
+1    1005
+3     815
+2     680
+4     439
+5     205
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Effrayé
+Autre  1          60
+       2          28
+       3          24
+       4          16
+       5           7
+                  ..
+TUV    1           9
+       2           8
+       4           4
+       5           4
+       3           3
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Intelligent
+Valori distincte: [1 4 5 2 3]
+Numărul global de valori:
+Intelligent
+5    1330
+4    1265
+3     350
+2     136
+1      63
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Intelligent
+Autre  5              66
+       4              57
+       3               7
+       2               3
+       1               2
+                      ..
+SPH    1               1
+TUV    5              14
+       4               9
+       1               3
+       3               2
+Name: count, Length: 72, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Vigilant
+Valori distincte: [1 4 5 3 2]
+Numărul global de valori:
+Vigilant
+4    1212
+5    1049
+3     477
+2     275
+1     131
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Vigilant
+Autre  4           50
+       5           46
+       3           21
+       2           13
+       1            5
+                   ..
+SPH    1            4
+TUV    5           13
+       4           10
+       1            3
+       3            2
+Name: count, Length: 73, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Perséverant
+Valori distincte: [1 5 4 3 2]
+Numărul global de valori:
+Perséverant
+4    1116
+5    1047
+3     610
+2     255
+1     116
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Perséverant
+Autre  5              52
+       4              41
+       3              26
+       2              15
+       1               1
+                      ..
+TUV    4              13
+       5              10
+       1               2
+       2               2
+       3               1
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Affectueux
+Valori distincte: [1 5 4 3 2]
+Numărul global de valori:
+Affectueux
+5    1505
+4     992
+3     352
+2     212
+1      83
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Affectueux
+Autre  5             75
+       4             37
+       2             10
+       3             10
+       1              3
+                     ..
+SPH    2              2
+TUV    5             15
+       4              9
+       1              2
+       3              2
+Name: count, Length: 74, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Amical
+Valori distincte: [1 5 4 2 3]
+Numărul global de valori:
+Amical
+4    1049
+5     735
+3     522
+2     507
+1     331
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Amical
+Autre  4         49
+       5         45
+       3         16
+       2         15
+       1         10
+                 ..
+TUV    4          9
+       5          7
+       3          6
+       1          5
+       2          1
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Solitaire
+Valori distincte: [1 2 3 5 4]
+Numărul global de valori:
+Solitaire
+2    832
+1    815
+4    680
+3    604
+5    213
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Solitaire
+Autre  1            42
+       2            40
+       4            23
+       3            22
+       5             8
+                    ..
+TUV    3             9
+       1             7
+       2             6
+       4             5
+       5             1
+Name: count, Length: 74, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Brutal
+Valori distincte: [1 2 4 3 5]
+Numărul global de valori:
+Brutal
+1    1748
+2     605
+3     437
+4     273
+5      81
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Brutal
+Autre  1         83
+       2         25
+       3         18
+       4          9
+BEN    1         88
+                 ..
+TUV    1         18
+       2          4
+       3          2
+       4          2
+       5          2
+Name: count, Length: 71, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Dominant
+Valori distincte: [1 2 3 4 5]
+Numărul global de valori:
+Dominant
+1    1003
+3     721
+4     587
+2     570
+5     263
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Dominant
+Autre  1           46
+       3           32
+       2           22
+       4           22
+       5           13
+                   ..
+TUV    1            8
+       3            7
+       4            7
+       2            5
+       5            1
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Agressif
+Valori distincte: [1 3 2 5 4]
+Numărul global de valori:
+Agressif
+1    1165
+3     869
+2     570
+4     369
+5     171
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Agressif
+Autre  1           62
+       3           33
+       2           20
+       4           16
+       5            4
+                   ..
+TUV    1            9
+       3            9
+       2            6
+       4            2
+       5            2
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Impulsif
+Valori distincte: [1 4 2 3 5]
+Numărul global de valori:
+Impulsif
+1    1009
+3     689
+2     674
+4     585
+5     187
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Impulsif
+Autre  1           38
+       2           36
+       3           29
+       4           23
+       5            9
+                   ..
+TUV    1            9
+       2            6
+       3            6
+       4            6
+       5            1
+Name: count, Length: 74, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Prévisible
+Valori distincte: [1 4 3 5 2]
+Numărul global de valori:
+Prévisible
+4    1278
+3     786
+5     428
+2     375
+1     277
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Prévisible
+Autre  4             51
+       3             31
+       5             23
+       1             15
+       2             15
+                     ..
+TUV    4             12
+       3              8
+       5              4
+       1              3
+       2              1
+Name: count, Length: 75, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Distrait
+Valori distincte: [1 3 2 4 5]
+Numărul global de valori:
+Distrait
+4    896
+3    891
+2    558
+1    431
+5    368
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Distrait
+Autre  4           41
+       3           33
+       2           22
+       1           20
+       5           19
+                   ..
+TUV    3           10
+       2            7
+       1            5
+       4            4
+       5            2
+Name: count, Length: 73, dtype: int64
+
+--------------------------------------------------
+
+Atrribut: Abondance
+Valori distincte: ['NSP' '3' '2' '1']
+Numărul global de valori:
+Abondance
+3      1339
+2       851
+1       714
+NSP     240
+Name: count, dtype: int64
+
+Numărul de valori pe 'Race':
+Race   Abondance
+Autre  3             48
+       2             42
+       1             34
+       NSP           11
+BEN    2             80
+       3             80
+       1             61
+       NSP           19
+BRI    3             55
+       2             54
+       1             40
+       NSP           17
+CHA    3             15
+       2              7
+       1              6
+       NSP            3
+EUR    3            509
+       2            240
+       1            213
+       NSP           60
+MCO    3             75
+       2             63
+       1             43
+       NSP           17
+NR     3            240
+       2            111
+       1             99
+       NSP           33
+NSP    3             42
+       2             21
+       1             16
+       NSP            1
+ORI    2             21
+       3             21
+       1             11
+       NSP            5
+PER    3             66
+       2             62
+       1             46
+       NSP           18
+RAG    1             77
+       3             58
+       2             55
+       NSP           27
+SAV    3             12
+       2              8
+       1              5
+       NSP            1
+SBI    3             73
+       2             60
+       1             40
+       NSP           19
+SPH    3             33
+       1             19
+       2             17
+       NSP            7
+TUV    3             12
+       2             10
+       1              4
+       NSP            2
+Name: count, dtype: int64
+
+--------------------------------------------------
+
+Nu au fost găsite atribute numerice pentru a corela cu 'Race'.
+
