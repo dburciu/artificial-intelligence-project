@@ -5,7 +5,12 @@
 import pandas as pd
 import numpy as np
 
-date = pd.read_excel("Data cat personality and predation Cordonnier et al.xlsx")
+# avem nevoie de date in format numeric
+date = pd.read_excel("Data_cat_numerice.xlsx")
+
+# elimin coloana PLUS // aici mentionase doamna sa folosim ceva special
+# pentru a transforma plus in numeric
+date = date.drop(date.columns[28], axis=1)
 
 # încercăm să prezicem coloana 4 (rasa), restul sunt caracteristicile specifice
 X = date.iloc[:, [col for col in range(date.shape[1]) if col != 4]].values

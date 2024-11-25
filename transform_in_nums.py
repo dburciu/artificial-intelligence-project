@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def transf_in_nums(file_path, output_path):
     # Citirea setului de date
     df = pd.read_excel(file_path)
