@@ -116,3 +116,48 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
     # vom returna iesire_strat_ascuns pentru a putea transmite informatia mai departe catre stratul de iesire
     # vom returna iesire_strat_iesire pentru a obtine predictiile retelei
     return iesire_strat_ascuns, iesire_strat_iesire
+
+#-------------------------------------------------------------------------------
+# 5. Propagarea înapoi: actualizarea ponderilor și biasurilor
+#-------------------------------------------------------------------------------
+
+def propagare_inapoi(X, y, iesire_strat_ascuns, iesire_strat_iesire, 
+                     ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, 
+                     bias_strat_ascuns, bias_strat_iesire, rata_invatare):
+    
+    # se calculeaza erorile pentru stratul de iesire
+    # ele reprezinta diferenta dintre valorile reale si predictiile obtinute de retea 
+
+    eroare_strat_iesire = iesire_strat_iesire - y
+    gradient_strat_iesire = eroare_strat_iesire * derivata_sigmoid(iesire_strat_iesire)
+    
+    # aici actualizam ponderile si bias-urile pentru stratul de iesire
+    # gradientul este derivata functiei de eroare fata de ponderi sau bias-uri si ne indica 
+    # directia in care vom ajusta ponderile si bias-urile pentru a obtine o eroare mai mica
+    # ponderile reprezinta produsul dintre activarile stratului anterior si erorile stratului curent
+    # rata de invatare are rol de a controla procesul ajustarii pentru a nu destabiliza antrenarea
+    # bias-urile sunt erorile stratului curent, combinand contributiile din toate instantele
+
+    delta_ponderi_strat_ascuns_iesire = np.dot(iesire_strat_ascuns.T, gradient_strat_iesire)
+    delta_bias_strat_iesire = np.sum(gradient_strat_iesire, axis=0)
+    ponderi_iesire_strat_ascuns -= rata_invatare * delta_ponderi_strat_ascuns_iesire
+    bias_strat_iesire -= rata_invatare * delta_bias_strat_iesire
+    
+    # se calculeaza erorile pentru stratul ascuns
+    # calculul se realizeaza propagand inapoi eroarea din stratul de iesire
+
+    eroare_strat_ascuns = np.dot(gradient_strat_iesire, ponderi_iesire_strat_ascuns.T)
+    gradient_strat_ascuns = eroare_strat_ascuns * derivata_sigmoid(iesire_strat_ascuns)
+    
+    # aici actualizam ponderile si bias-urile pentru stratul ascuns
+    # idem ca la stratul de iesire
+
+    delta_ponderi_intrare_strat_ascuns = np.dot(X.T, gradient_strat_ascuns)
+    delta_bias_strat_ascuns = np.sum(gradient_strat_ascuns, axis=0)
+    ponderi_intrare_strat_ascuns -= rata_invatare * delta_ponderi_intrare_strat_ascuns
+    bias_strat_ascuns -= rata_invatare * delta_bias_strat_ascuns
+
+    # returnam noile ponderi si noile bias-uri
+
+    return ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire
+
