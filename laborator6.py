@@ -84,3 +84,35 @@ def derivata_sigmoid(x):
 # (etichetele). Scopul antrenării este să minimizăm funcția de eroare
 def functie_eroare(y_real, y_pred):
     return -np.sum(y_real * np.log(y_pred) + (1 - y_real) * np.log(1 - y_pred)) / len(y_real)
+
+#-------------------------------------------------------------------------------
+# 4. Propagarea înainte: calculează ieșirea neuronilor
+#-------------------------------------------------------------------------------
+
+def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire):
+
+    # Calculul pentru stratul ascuns
+    # np.dot realizeaza suma ponderata a intrarilor 
+    # poate efectua produs scalar(daca ambele intrari sunt vectori unidimensionali)
+    # produs matricial(daca ambele intrari sunt matrici bidimensionale)
+    # produs dintre o matrice si un vector(una dintre intrari este o matrice si cealalta un vector)
+    # se efectueaza calculul activarilor in stratul ascuns(pentru fiecare neuron din stratul ascuns, se calculeaza suma ponderata
+    # a intrarilor din stratul anterior(stratul de intrare) si se adauga bias-ul asociat
+
+    intrare_strat_ascuns = np.dot(X, ponderi_intrare_strat_ascuns) + bias_strat_ascuns
+
+    # aici se aplica functia de activare a fiecarui neuron din stratul ascuns 
+
+    iesire_strat_ascuns = sigmoid(intrare_strat_ascuns)
+    
+    # se efectueaza calculul activarilor din stratul de iesire
+    # se utilizeaza activarile din stratul ascuns pentru a calcula intrarea ponderata a stratului de iesire
+
+    intrare_strat_iesire = np.dot(iesire_strat_ascuns, ponderi_iesire_strat_ascuns) + bias_strat_iesire
+
+    # se aplica functia de activare pentru a afla predictiile retelei pentru fiecare clasa a setului de date
+    iesire_strat_iesire = sigmoid(intrare_strat_iesire)
+    
+    # vom returna iesire_strat_ascuns pentru a putea transmite informatia mai departe catre stratul de iesire
+    # vom returna iesire_strat_iesire pentru a obtine predictiile retelei
+    return iesire_strat_ascuns, iesire_strat_iesire
