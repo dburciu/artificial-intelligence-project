@@ -162,7 +162,11 @@ def propagare_inapoi(X, y, iesire_strat_ascuns, iesire_strat_iesire,
     return ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire
 
 #-------------------------------------------------------------------------------
-# 6. Antrenarea rețelei neuronale pentru un număr de epoci
+# 6. Antrenarea rețelei neuronale pentru un număr de epoci 
+# execută propagare înainte pentru întregul set de antrenare.
+# Calculează eroarea și reține-o pentru vizualizare.
+# Execută propagare înapoi pentru a actualiza ponderile.
+# Repetă pentru numărul maxim de epoci.
 #-------------------------------------------------------------------------------
 
 eroare_pe_epoca = []  # pentru a înregistra eroarea pe fiecare epocă
@@ -189,6 +193,11 @@ for epoca in range(numar_maxim_epoci):
 
 #-------------------------------------------------------------------------------
 # 7. Predicția pe setul de date de testare și afișarea metricilor de performanță
+# Folosești modelul antrenat pentru a face predicții pe setul de testare:
+# Aplici propagarea înainte pe setul de testare.
+# Compari predicțiile cu etichetele reale.
+# Calculezi acuratețea (sau alte metrici, ex.: precizie, recall, F1).
+# Opțional, afișezi exemple clasificate greșit.
 #-------------------------------------------------------------------------------
 
 # Propagare înainte pentru setul de testare
