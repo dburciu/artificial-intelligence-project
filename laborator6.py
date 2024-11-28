@@ -16,6 +16,8 @@ date = date.drop(date.columns[28], axis=1)
 X = date.iloc[:, [col for col in range(date.shape[1]) if col != 1]].values
 y = date.iloc[:, 1].values  # coloana 2 (indice 1)
 
+print(y)
+
 # normalizăm caracteristicile pentru convergență mai rapidă
 X = (X - X.mean(axis=0)) / X.std(axis=0)
 
@@ -37,6 +39,8 @@ dimensiune_intrare = X_antrenare.shape[1]  # numărul de caracteristici
 dimensiune_strat_ascuns = 10  # numărul de neuroni din stratul ascuns
 dimensiune_iesire = len(np.unique(y))  # numărul de clase distincte
 
+print(dimensiune_iesire)
+
 # parametrii pentru antrenare
 rata_invatare = 0.01
 numar_maxim_epoci = 1000
@@ -44,7 +48,7 @@ numar_maxim_epoci = 1000
 
 # inițializarea ponderilor și bias-urilor
 np.random.seed(42)
-ponderi_intrare_ascuns = np.random.rand(dimensiune_intrare, dimensiune_strat_ascuns) - 0.5
+ponderi_intrare_ascuns = np.random.rand(dimensiune_intrare, dimensiune_strat_ascuns) - 0.5 #intre 0 si 1
 ponderi_ascuns_iesire = np.random.rand(dimensiune_strat_ascuns, dimensiune_iesire) - 0.5
 bias_ascuns = np.zeros(dimensiune_strat_ascuns)
 bias_iesire = np.zeros(dimensiune_iesire)
