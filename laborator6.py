@@ -115,7 +115,12 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
     
     # vom returna iesire_strat_ascuns pentru a putea transmite informatia mai departe catre stratul de iesire
     # vom returna iesire_strat_iesire pentru a obtine predictiile retelei
+    print(iesire_strat_iesire)
     return iesire_strat_ascuns, iesire_strat_iesire
+
+propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
+print("y:", y)
+
 
 #-------------------------------------------------------------------------------
 # 5. Propagarea înapoi: actualizarea ponderilor și biasurilor
@@ -126,7 +131,7 @@ def propagare_inapoi(X, y, iesire_strat_ascuns, iesire_strat_iesire,
                      bias_strat_ascuns, bias_strat_iesire, rata_invatare):
     
     # se calculeaza erorile pentru stratul de iesire
-    # ele reprezinta diferenta dintre valorile reale si predictiile obtinute de retea 
+    # ele reprezinta diferenta dintre valorile reale si predictiile obtinute de retea
 
     eroare_strat_iesire = iesire_strat_iesire - y
     gradient_strat_iesire = eroare_strat_iesire * derivata_sigmoid(iesire_strat_iesire)
