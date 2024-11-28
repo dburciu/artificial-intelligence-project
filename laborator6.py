@@ -13,8 +13,8 @@ date = pd.read_excel("Data_cat_numerice.xlsx")
 date = date.drop(date.columns[28], axis=1)
 
 # încercăm să prezicem coloana 4 (rasa), restul sunt caracteristicile specifice
-X = date.iloc[:, [col for col in range(date.shape[1]) if col != 4]].values
-y = date.iloc[:, 4].values  # coloana 5 (indice 4)
+X = date.iloc[:, [col for col in range(date.shape[1]) if col != 1]].values
+y = date.iloc[:, 1].values  # coloana 2 (indice 1)
 
 # normalizăm caracteristicile pentru convergență mai rapidă
 X = (X - X.mean(axis=0)) / X.std(axis=0)
