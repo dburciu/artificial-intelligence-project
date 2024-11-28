@@ -161,3 +161,57 @@ def propagare_inapoi(X, y, iesire_strat_ascuns, iesire_strat_iesire,
 
     return ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire
 
+#-------------------------------------------------------------------------------
+# 6. Antrenarea rețelei neuronale pentru un număr de epoci
+#-------------------------------------------------------------------------------
+
+eroare_pe_epoca = []  # pentru a înregistra eroarea pe fiecare epocă
+
+for epoca in range(numar_maxim_epoci):
+    # Propagare înainte
+    iesire_ascuns, iesire_finala = propagare_inainte(
+        X_antrenare, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire
+    )
+    
+    # Calculul erorii pentru setul de antrenare
+    eroare = functie_eroare(y_antrenare, iesire_finala)
+    eroare_pe_epoca.append(eroare)
+    
+    # Propagare înapoi și actualizarea parametrilor
+    ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire = propagare_inapoi(
+        X_antrenare, y_antrenare, iesire_ascuns, iesire_finala, 
+        ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire, rata_invatare
+    )
+    
+    # Afișare progres
+    if epoca % 100 == 0 or epoca == numar_maxim_epoci - 1:
+        print(f"Epoca {epoca + 1}/{numar_maxim_epoci}, Eroare: {eroare:.4f}")
+
+#-------------------------------------------------------------------------------
+# 7. Predicția pe setul de date de testare și afișarea metricilor de performanță
+#-------------------------------------------------------------------------------
+
+# Propagare înainte pentru setul de testare
+_, iesire_test = propagare_inainte(
+    X_testare, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire
+)
+
+# Conversie ieșire în predicții (alegem clasa cu probabilitatea cea mai mare)
+predictii = np.argmax(iesire_test, axis=1)  # indexul clasei prezise
+etichete_reale = np.argmax(y_testare, axis=1)  # indexul clasei reale
+
+# Calcularea acurateței
+acuratete = np.mean(predictii == etichete_reale) * 100
+print(f"Acuratețea pe setul de testare: {acuratete:.2f}%")
+
+#-------------------------------------------------------------------------------
+# Opțional: Graficul erorii pe epoci pentru a vizualiza progresul antrenării
+#-------------------------------------------------------------------------------
+import matplotlib.pyplot as plt
+
+plt.plot(range(numar_maxim_epoci), eroare_pe_epoca, label='Eroare')
+plt.xlabel('Epoci')
+plt.ylabel('Eroare')
+plt.title('Progresul antrenării')
+plt.legend()
+plt.show()
