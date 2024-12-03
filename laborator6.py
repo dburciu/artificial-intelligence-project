@@ -119,7 +119,7 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
     return iesire_strat_ascuns, iesire_strat_iesire
 
 propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
-print("y:", y)
+
 
 
 #-------------------------------------------------------------------------------
