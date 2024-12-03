@@ -4,6 +4,9 @@
 #------------------------------------------------------------------------
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import OneHotEncoder
+
+#pentru a folosi OneHotEncoder -> pip install scikit-learn !!!
 
 # avem nevoie de date in format numeric
 date = pd.read_excel("Data_cat_numerice.xlsx")
@@ -92,6 +95,28 @@ def functie_eroare(y_real, y_pred):
 # 4. Propagarea înainte: calculează ieșirea neuronilor
 #-------------------------------------------------------------------------------
 
+# definim functia pentru OneHotEncoding
+
+def oneHotEncoder(y):
+    # transformam y intr o matrice de 2 dimensiuni
+
+    y = y.reshape(-1, 1)
+
+    # aplicam one hot encoder pe y(matricea de 2 dimensiuni)
+
+    enc = OneHotEncoder()
+    y_enc = enc.fit_transform(y)
+
+    # construim noul dataframe folosind coloanele obtinute mai sus
+
+    enc_dataframe = pd.DataFrame(y_enc.toarray(), columns=enc.categories_[0])
+
+    return enc_dataframe
+
+print(f"\ny este: {y}")
+z = oneHotEncoder(y)
+print(f"\nRezultatul aplicarii One Hot Encoder pe y este:\n {z}")
+
 def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire):
 
     # Calculul pentru stratul ascuns
@@ -118,12 +143,10 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
     
     # vom returna iesire_strat_ascuns pentru a putea transmite informatia mai departe catre stratul de iesire
     # vom returna iesire_strat_iesire pentru a obtine predictiile retelei
-    print(iesire_strat_iesire)
+    print(f"\nStratul de iesire: \n\n{iesire_strat_iesire}")
     return iesire_strat_ascuns, iesire_strat_iesire
 
-propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
-
-
+# propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
 
 #-------------------------------------------------------------------------------
 # 5. Propagarea înapoi: actualizarea ponderilor și biasurilor
