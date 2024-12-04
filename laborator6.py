@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 # avem nevoie de date in format numeric
 date = pd.read_excel("Data_cat_numerice.xlsx")
 
-print(date)
+# print(date)
 
 # elimin coloana PLUS // aici mentionase doamna sa folosim ceva special
 # pentru a transforma plus in numeric
@@ -113,9 +113,9 @@ def oneHotEncoder(y):
 
     return enc_dataframe
 
-print(f"\ny este: {y}")
+# print(f"\ny este: {y}")
 z = oneHotEncoder(y)
-print(f"\nRezultatul aplicarii One Hot Encoder pe y este:\n {z}")
+# print(f"\nRezultatul aplicarii One Hot Encoder pe y este:\n {z}")
 
 def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire):
 
@@ -140,26 +140,36 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
 
     # se aplica functia de activare pentru a afla predictiile retelei pentru fiecare clasa a setului de date
     iesire_strat_iesire = sigmoid(intrare_strat_iesire)
+
+    # calculam predictiile
+    # ele reprezinta clasa cu probabilitatea maxima
+
+    # predictii = np.argmax(iesire_strat_iesire, axis=1)
     
     # vom returna iesire_strat_ascuns pentru a putea transmite informatia mai departe catre stratul de iesire
     # vom returna iesire_strat_iesire pentru a obtine predictiile retelei
-    print(f"\nStratul de iesire: \n\n{iesire_strat_iesire}")
+
     return iesire_strat_ascuns, iesire_strat_iesire
 
-# propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
+iesire_strat_ascuns, iesire_strat_iesire = propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
+
+print(f"\nStratul de iesire: \n\n{iesire_strat_iesire}")
+
+predictii = np.argmax(iesire_strat_iesire, axis=1)
+print(f"\nPredictiile algorimului: \n\n{predictii}")
 
 #-------------------------------------------------------------------------------
 # 5. Propagarea înapoi: actualizarea ponderilor și biasurilor
 #-------------------------------------------------------------------------------
 
-def propagare_inapoi(X, y, iesire_strat_ascuns, iesire_strat_iesire, 
+def propagare_inapoi(X, z, iesire_strat_ascuns, iesire_strat_iesire, 
                      ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, 
                      bias_strat_ascuns, bias_strat_iesire, rata_invatare):
     
     # se calculeaza erorile pentru stratul de iesire
     # ele reprezinta diferenta dintre valorile reale si predictiile obtinute de retea
 
-    eroare_strat_iesire = iesire_strat_iesire - y
+    eroare_strat_iesire = iesire_strat_iesire - z
     gradient_strat_iesire = eroare_strat_iesire * derivata_sigmoid(iesire_strat_iesire)
     
     # aici actualizam ponderile si bias-urile pentru stratul de iesire
@@ -187,10 +197,13 @@ def propagare_inapoi(X, y, iesire_strat_ascuns, iesire_strat_iesire,
     delta_bias_strat_ascuns = np.sum(gradient_strat_ascuns, axis=0)
     ponderi_intrare_strat_ascuns -= rata_invatare * delta_ponderi_intrare_strat_ascuns
     bias_strat_ascuns -= rata_invatare * delta_bias_strat_ascuns
-
+    
     # returnam noile ponderi si noile bias-uri
 
     return ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire
+
+# propagare_inapoi(X, z, iesire_strat_ascuns, iesire_strat_iesire, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire, rata_invatare)
+
 
 #-------------------------------------------------------------------------------
 # 6. Antrenarea rețelei neuronale pentru un număr de epoci 
