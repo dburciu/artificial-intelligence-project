@@ -254,19 +254,32 @@ for epoca in range(numar_maxim_epoci):
 # Calculezi acuratețea (sau alte metrici, ex.: precizie, recall, F1).
 # Opțional, afișezi exemple clasificate greșit.
 #-------------------------------------------------------------------------------
+# Calculul acurateței pe setul de antrenare
+_, iesire_train = propagare_inainte(
+    X_antrenare, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire
+)
 
-# Propagare înainte pentru setul de testare
+# Conversie ieșire în predicții (alegem clasa cu probabilitatea cea mai mare)
+predictii_train = np.argmax(iesire_train, axis=1)  # indexul clasei prezise pentru antrenare
+etichete_reale_train = np.argmax(y_antrenare, axis=1)  # indexul clasei reale pentru antrenare
+
+# Calcularea acurateței pentru antrenare
+acuratete_train = np.mean(predictii_train == etichete_reale_train) * 100
+print(f"Acuratețea pe setul de antrenare: {acuratete_train:.2f}%")
+
+# Calculul acurateței pe setul de testare
 _, iesire_test = propagare_inainte(
     X_testare, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns, bias_iesire
 )
 
 # Conversie ieșire în predicții (alegem clasa cu probabilitatea cea mai mare)
-predictii = np.argmax(iesire_test, axis=1)  # indexul clasei prezise
-etichete_reale = np.argmax(y_testare, axis=1)  # indexul clasei reale
+predictii_test = np.argmax(iesire_test, axis=1)  # indexul clasei prezise pentru testare
+etichete_reale_test = np.argmax(y_testare, axis=1)  # indexul clasei reale pentru testare
 
-# Calcularea acurateței
-acuratete = np.mean(predictii == etichete_reale) * 100
-print(f"Acuratețea pe setul de testare: {acuratete:.2f}%")
+# Calcularea acurateței pentru testare
+acuratete_test = np.mean(predictii_test == etichete_reale_test) * 100
+print(f"Acuratețea pe setul de testare: {acuratete_test:.2f}%")
+
 
 
 print("Dimensiuni y_antrenare:", y_antrenare.shape)  # Trebuie să fie (număr_sample, număr_clase)
