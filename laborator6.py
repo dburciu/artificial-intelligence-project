@@ -100,12 +100,13 @@ def functie_eroare(y_real, y_pred):
 def oneHotEncoder(y):
     # transformam y intr o matrice de 2 dimensiuni
 
-    y = y.reshape(-1, 1)
+    y = np.array(y).reshape(-1, 1)  # Transformă y în format bidimensional
 
     # aplicam one hot encoder pe y(matricea de 2 dimensiuni)
 
-    enc = OneHotEncoder()
+    enc = OneHotEncoder(sparse_output=False)  # Setează sparse=False pentru a obține array dens
     y_enc = enc.fit_transform(y)
+    return y_enc
 
     # construim noul dataframe folosind coloanele obtinute mai sus
 
@@ -213,6 +214,16 @@ def propagare_inapoi(X, z, iesire_strat_ascuns, iesire_strat_iesire,
 # Repetă pentru numărul maxim de epoci.
 #-------------------------------------------------------------------------------
 
+# Separarea datelor în antrenare și testare
+from sklearn.model_selection import train_test_split
+
+X_antrenare, X_testare, y_antrenare, y_testare = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Aplică One-Hot Encoding pentru y_antrenare și y_testare
+y_antrenare = oneHotEncoder(y_antrenare)
+y_testare = oneHotEncoder(y_testare)
+
+
 eroare_pe_epoca = []  # pentru a înregistra eroarea pe fiecare epocă
 
 for epoca in range(numar_maxim_epoci):
@@ -256,6 +267,13 @@ etichete_reale = np.argmax(y_testare, axis=1)  # indexul clasei reale
 # Calcularea acurateței
 acuratete = np.mean(predictii == etichete_reale) * 100
 print(f"Acuratețea pe setul de testare: {acuratete:.2f}%")
+
+
+print("Dimensiuni y_antrenare:", y_antrenare.shape)  # Trebuie să fie (număr_sample, număr_clase)
+print("Dimensiuni iesire_finala:", iesire_finala.shape)  # Trebuie să fie la fel cu y_antrenare
+
+
+
 
 #-------------------------------------------------------------------------------
 # Opțional: Graficul erorii pe epoci pentru a vizualiza progresul antrenării
