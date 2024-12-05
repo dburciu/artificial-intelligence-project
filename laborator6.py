@@ -114,9 +114,7 @@ def oneHotEncoder(y):
 
     return enc_dataframe
 
-# print(f"\ny este: {y}")
 z = oneHotEncoder(y)
-# print(f"\nRezultatul aplicarii One Hot Encoder pe y este:\n {z}")
 
 def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascuns, bias_strat_ascuns, bias_strat_iesire):
 
@@ -144,8 +142,6 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
 
     # calculam predictiile
     # ele reprezinta clasa cu probabilitatea maxima
-
-    # predictii = np.argmax(iesire_strat_iesire, axis=1)
     
     # vom returna iesire_strat_ascuns pentru a putea transmite informatia mai departe catre stratul de iesire
     # vom returna iesire_strat_iesire pentru a obtine predictiile retelei
@@ -153,11 +149,6 @@ def propagare_inainte(X, ponderi_intrare_strat_ascuns, ponderi_iesire_strat_ascu
     return iesire_strat_ascuns, iesire_strat_iesire
 
 iesire_strat_ascuns, iesire_strat_iesire = propagare_inainte(X, ponderi_intrare_ascuns, ponderi_ascuns_iesire, bias_ascuns,bias_iesire)
-
-print(f"\nStratul de iesire: \n\n{iesire_strat_iesire}")
-
-predictii = np.argmax(iesire_strat_iesire, axis=1)
-print(f"\nPredictiile algorimului: \n\n{predictii}")
 
 #-------------------------------------------------------------------------------
 # 5. Propagarea înapoi: actualizarea ponderilor și biasurilor
