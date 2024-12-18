@@ -13,6 +13,14 @@ def citire_fisier(file_path):
     if not os.path.isfile(file_path):
         raise FileNotFoundError("File does not exist!")
 
+    try:
+        with open(file_path, 'r') as file:
+            text = file.read()
+            print(f"\nTextul citit din fisier: {text}\n")
+    except Exception as e:
+        print(e)
+
+    return text
 
 while not valid: 
     option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
@@ -26,8 +34,8 @@ while not valid:
     elif option.lower() == "fisier":
         valid = True
         file_path = input("\nIntroduceti calea catre fisier: ")
-        citire_fisier(file_path)
         print(f"\nCalea primita: {file_path}\n")
+        citire_fisier(file_path)
 
     else: 
         print("\noptiune invalida!")
