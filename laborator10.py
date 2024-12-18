@@ -1,7 +1,19 @@
 import sys
 import os
+from langdetect import detect, detect_langs
 
 valid = False
+
+def detectare_limba(text):
+    try:
+        lang = detect(text)
+        prob = detect_langs(text)
+
+        print(f"Textul este scris in limba: {lang}")
+        print(f"Probabilitati detaliate: {prob}")
+
+    except Exception as e:
+        print(f"Eroare la detectarea limbii: {e}")
 
 def citire_consola():
     print("\naici fac citirea din consola")
@@ -30,12 +42,14 @@ while not valid:
         valid = True
         text = input("\nIntroduceti textul: ")
         print(f"\nTextul este: {text}\n")
+        detectare_limba(text)
 
     elif option.lower() == "fisier":
         valid = True
         file_path = input("\nIntroduceti calea catre fisier: ")
         print(f"\nCalea primita: {file_path}\n")
-        citire_fisier(file_path)
+        text = citire_fisier(file_path)
+        detectare_limba(text)
 
     else: 
         print("\noptiune invalida!")
