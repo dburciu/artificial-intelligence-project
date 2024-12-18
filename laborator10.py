@@ -13,6 +13,8 @@ nltk.download('stopwords')
 nltk.download('punkt_tab')
 
 # Generez dinamic o mapare intre codurile date de langdetec si cele suportate de nltk
+# stopwords.fileids() va returna lista cu limbile suportate de nltk
+# lang[:2] preia primele 2 caractere pentru a putea compune coduri pentru fiecare limba -> ro ~ romanian
 
 lang_to_nltk = {lang[:2]: lang for lang in stopwords.fileids()}
 
