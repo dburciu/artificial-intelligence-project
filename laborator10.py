@@ -5,6 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import nltk
 from collections import Counter
+import matplotlib.pyplot as plt
 
 valid = False
 
@@ -70,21 +71,69 @@ def informatii_stilometrice(text, lang):
 
     words_mean = words_len / nb_of_phrases if nb_of_phrases > 0 else 0
 
-    print(f"\nLungimea textului in cuvinte: {words}")
-    print(f"\nLungimea textului in caractere: {char_len}")
-    print(f"\nCele mai frecvente cuvinte(toate): ")
+    # Lungimea textului in caractere
 
-    for w, frq in words_freq.most_common(10):
-        print(f"  {w}: {frq}")
+    plt.figure(figsize=(5, 5))
+    plt.bar(['Lungimea în caractere'], [char_len], color='blue')
+    plt.title('Lungimea textului în caractere')
+    plt.ylabel('Număr de caractere')
+    plt.tight_layout()
+    plt.show()
+
+     # Lungimea textului in cuvinte
+
+    plt.figure(figsize=(5, 5))
+    plt.bar(['Lungimea în cuvinte'], [words_len], color='cyan')
+    plt.title('Lungimea textului în cuvinte')
+    plt.ylabel('Număr de cuvinte')
+    plt.tight_layout()
+    plt.show()
+
+     # Frecventa cuvintelor (toate)
+
+    most_common_words = words_freq.most_common(10)
+    words_labels, words_values = zip(*most_common_words)
+
+    plt.figure(figsize=(10, 5))
+    plt.bar(words_labels, words_values, color='skyblue')
+    plt.title('Cele mai frecvente cuvinte (toate)')
+    plt.ylabel('Frecvența')
+    plt.xlabel('Cuvinte')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+    # Frecventa cuvintelor (cele mai importante)
     
-    print(f"\nCele mai frecvente cuvinte(importante): ")
+    most_common_important_words = important_words_freq.most_common(10)
+    important_words_labels, important_words_values = zip(*most_common_important_words)
 
-    for w, frq in important_words_freq.most_common(10):
-        print(f"  {w}: {frq}")
+    plt.figure(figsize=(10, 5))
+    plt.bar(important_words_labels, important_words_values, color='orange')
+    plt.title('Cele mai frecvente cuvinte (importante)')
+    plt.ylabel('Frecvența')
+    plt.xlabel('Cuvinte')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
-    print(f"\nNumarul de propozitii: {nb_of_phrases}")
-    print(f"\nMedia cuvintelor per propozitie: {words_mean:.2f}\n")
-    
+    # Distributia numarului de cuvinte per propozitie
+
+    plt.figure(figsize=(5, 5))
+    plt.bar(['Media cuvintelor/propozitie'], [words_mean], color='green')
+    plt.title('Media cuvintelor per propoziție')
+    plt.ylabel('Numărul mediu de cuvinte')
+    plt.tight_layout()
+    plt.show()
+
+    # Numarul total de propozitii
+
+    plt.figure(figsize=(5, 5))
+    plt.bar(['Numărul de propoziții'], [nb_of_phrases], color='purple')
+    plt.title('Numărul total de propoziții')
+    plt.ylabel('Număr')
+    plt.tight_layout()
+    plt.show()
 
 def citire_fisier(file_path):
     if not os.path.exists(file_path):
