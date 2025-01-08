@@ -154,28 +154,28 @@ def citire_fisier(file_path):
     return text
 
 
-while not valid:
-    option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
+# while not valid:
+#     option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
 
-    if option.lower() == "consola":
-        valid = True
-        text = input("\nIntroduceti textul: ")
-        print(f"\nTextul este: {text}\n")
-        lang = detectare_limba(text)
-        informatii_stilometrice(text, lang)
+#     if option.lower() == "consola":
+#         valid = True
+#         text = input("\nIntroduceti textul: ")
+#         print(f"\nTextul este: {text}\n")
+#         lang = detectare_limba(text)
+#         informatii_stilometrice(text, lang)
 
-    elif option.lower() == "fisier":
-        valid = True
-        file_path = input("\nIntroduceti calea catre fisier: ")
-        print(f"\nCalea primita: {file_path}\n")
-        text = citire_fisier(file_path)
-        lang = detectare_limba(text)
-        informatii_stilometrice(text, lang)
+#     elif option.lower() == "fisier":
+#         valid = True
+#         file_path = input("\nIntroduceti calea catre fisier: ")
+#         print(f"\nCalea primita: {file_path}\n")
+#         text = citire_fisier(file_path)
+#         lang = detectare_limba(text)
+#         informatii_stilometrice(text, lang)
 
-    else:
-        print("\noptiune invalida!")
-        valid = False
-        continue
+#     else:
+#         print("\noptiune invalida!")
+#         valid = False
+#         continue
 
 ## punctul 4
 
@@ -256,3 +256,75 @@ test_text3 = "This is one of the reasons I would not let go of her even for all 
 print("Text original:", test_text3)
 alternative_text3 = replace_words(test_text3)
 print("Text alternativ:", alternative_text3)
+
+
+
+
+
+### punctul 5 
+
+from rake_nltk import Rake  # Importăm RAKE pentru extragerea cuvintelor cheie
+
+# Functia pentru extragerea cuvintelor cheie folosind RAKE
+def extract_keywords(text):
+    rake = Rake()  # Instanțiem un obiect Rake
+    rake.extract_keywords_from_text(text)  # Extragem cuvintele cheie
+    keywords = rake.get_ranked_phrases()  # Obținem cuvintele cheie în ordine de relevanță
+    return keywords
+
+
+# Functia pentru generarea propozițiilor explicative pentru fiecare cuvânt cheie
+def generate_sentences(keywords, original_text):
+    sentences = []
+    for keyword in keywords:
+        # Generăm o propoziție explicativă pentru fiecare cuvânt cheie
+        if keyword in original_text:
+            sentence = f"One of the key points in the text is '{keyword}'. This word highlights an important aspect, as it contributes to the main theme of the text."
+        else:
+            sentence = f"'{keyword}' is an important term in the text that connects various ideas and enhances the understanding of the content."
+        sentences.append(sentence)
+    return sentences
+
+
+
+# Integrarea în fluxul de execuție
+while not valid:
+    option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
+
+    if option.lower() == "consola":
+        valid = True
+        text = input("\nIntroduceti textul: ")
+        print(f"\nTextul este: {text}\n")
+        lang = detectare_limba(text)
+        informatii_stilometrice(text, lang)
+
+        # Extragem cuvintele cheie
+        keywords = extract_keywords(text)
+        print("\nCuvinte cheie extrase:", keywords)
+
+        # Generăm propoziții pentru fiecare cuvânt cheie
+        sentences = generate_sentences(keywords, text)
+        for sentence in sentences:
+            print(sentence)
+
+    elif option.lower() == "fisier":
+        valid = True
+        file_path = input("\nIntroduceti calea catre fisier: ")
+        print(f"\nCalea primita: {file_path}\n")
+        text = citire_fisier(file_path)
+        lang = detectare_limba(text)
+        informatii_stilometrice(text, lang)
+
+        # Extragem cuvintele cheie
+        keywords = extract_keywords(text)
+        print("\nCuvinte cheie extrase:", keywords)
+
+        # Generăm propoziții pentru fiecare cuvânt cheie
+        sentences = generate_sentences(keywords, text)
+        for sentence in sentences:
+            print(sentence)
+
+    else:
+        print("\noptiune invalida!")
+        valid = False
+        continue
