@@ -19,6 +19,7 @@ nltk.download('punkt_tab')
 
 lang_to_nltk = {lang[:2]: lang for lang in stopwords.fileids()}
 
+
 def detectare_limba(text):
     try:
         lang = detect(text)
@@ -29,11 +30,11 @@ def detectare_limba(text):
 
     except Exception as e:
         print(f"Eroare la detectarea limbii: {e}")
-    
+
     return lang
 
-def informatii_stilometrice(text, lang):
 
+def informatii_stilometrice(text, lang):
     lang_nltk = lang_to_nltk.get(lang, "english")
     print(f"\n\n\nLimba este: {lang_nltk}")
 
@@ -80,7 +81,7 @@ def informatii_stilometrice(text, lang):
     plt.tight_layout()
     plt.show()
 
-     # Lungimea textului in cuvinte
+    # Lungimea textului in cuvinte
 
     plt.figure(figsize=(5, 5))
     plt.bar(['Lungimea în cuvinte'], [words_len], color='cyan')
@@ -89,7 +90,7 @@ def informatii_stilometrice(text, lang):
     plt.tight_layout()
     plt.show()
 
-     # Frecventa cuvintelor (toate)
+    # Frecventa cuvintelor (toate)
 
     most_common_words = words_freq.most_common(10)
     words_labels, words_values = zip(*most_common_words)
@@ -104,7 +105,7 @@ def informatii_stilometrice(text, lang):
     plt.show()
 
     # Frecventa cuvintelor (cele mai importante)
-    
+
     most_common_important_words = important_words_freq.most_common(10)
     important_words_labels, important_words_values = zip(*most_common_important_words)
 
@@ -135,10 +136,11 @@ def informatii_stilometrice(text, lang):
     plt.tight_layout()
     plt.show()
 
+
 def citire_fisier(file_path):
     if not os.path.exists(file_path):
         raise FileNotFoundError("File does not exist!")
-    
+
     if not os.path.isfile(file_path):
         raise FileNotFoundError("File does not exist!")
 
@@ -151,7 +153,8 @@ def citire_fisier(file_path):
 
     return text
 
-while not valid: 
+
+while not valid:
     option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
 
     if option.lower() == "consola":
@@ -169,7 +172,87 @@ while not valid:
         lang = detectare_limba(text)
         informatii_stilometrice(text, lang)
 
-    else: 
+    else:
         print("\noptiune invalida!")
         valid = False
         continue
+
+## punctul 4
+
+from nltk.corpus import wordnet
+import random
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from collections import Counter
+import nltk
+
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+
+def get_synonyms(word):
+    synonyms = []
+    for syn in wordnet.synsets(word):
+        for lemma in syn.lemmas():
+            synonyms.append(lemma.name().replace('_', ' '))
+    return list(set(synonyms))
+
+
+def get_hypernyms(word):
+    hypernyms = []
+    for syn in wordnet.synsets(word):
+        for hyper in syn.hypernyms():
+            for lemma in hyper.lemmas():
+                hypernyms.append(lemma.name().replace('_', ' '))
+    return list(set(hypernyms))
+
+
+# antonime NEGATE
+def get_antonyms(word):
+    antonyms = []
+    for syn in wordnet.synsets(word):
+        for lemma in syn.lemmas():
+            if lemma.antonyms():
+                antonyms.append('not ' + lemma.antonyms()[0].name().replace('_', ' '))
+    return antonyms
+
+
+def replace_words(text):
+    words = word_tokenize(text)
+    new_words = words[:]
+    stop_words = set(stopwords.words('english'))
+
+    # filtrez cuvintele relevante (fără stopwords și doar cuvinte alfabetice)
+    filtered_words = [word.lower() for word in words if word.isalpha() and word.lower() not in stop_words]
+
+    # aleg 20% din cuvinte filtrate pentru a le schimba
+    num_to_replace = int(len(words) * 0.2)
+    important_words = random.sample(filtered_words, num_to_replace)
+
+    for i, word in enumerate(words):
+        if word.lower() in important_words and word.isalpha():
+            synonyms = get_synonyms(word)
+            hypernyms = get_hypernyms(word)
+            antonyms = get_antonyms(word)
+            replacements = synonyms + hypernyms + antonyms
+
+            if replacements:
+                new_words[i] = random.choice(replacements)
+
+    return ' '.join(new_words)
+
+
+test_text1 = "The cat has a lot of personality. She is fluffy and full of energy."
+print("Text original:", test_text1)
+alternative_text1 = replace_words(test_text1)
+print("Text alternativ:", alternative_text1)
+
+test_text2 = "I can not imagine my life without her. "
+print("Text original:", test_text2)
+alternative_text2 = replace_words(test_text2)
+print("Text alternativ:", alternative_text2)
+
+test_text3 = "This is one of the reasons I would not let go of her even for all the money in the world."
+print("Text original:", test_text3)
+alternative_text3 = replace_words(test_text3)
+print("Text alternativ:", alternative_text3)
