@@ -262,30 +262,46 @@ print("Text alternativ:", alternative_text3)
 
 
 ### punctul 5 
+import re
+from collections import Counter
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 
-from rake_nltk import Rake  # Importăm RAKE pentru extragerea cuvintelor cheie
-
-# Functia pentru extragerea cuvintelor cheie folosind RAKE
+# Funcția de extragere a cuvintelor cheie
 def extract_keywords(text):
-    rake = Rake()  # Instanțiem un obiect Rake
-    rake.extract_keywords_from_text(text)  # Extragem cuvintele cheie
-    keywords = rake.get_ranked_phrases()  # Obținem cuvintele cheie în ordine de relevanță
-    return keywords
+    # Tokenizare a textului
+    words = word_tokenize(text.lower())  # Toate cuvintele mici pentru a evita duplicarea
+    # Îndepărtăm semnele de punctuație și cuvintele din lista de stopwords
+    stop_words = set(stopwords.words('romanian'))  # Folosim stopwords în limba română
+    filtered_words = [word for word in words if word.isalnum() and word not in stop_words]
+    # Calculăm frecvența cuvintelor
+    word_frequencies = Counter(filtered_words)
+    # Obținem cele mai frecvente cuvinte (în ordine descrescătoare a frecvenței)
+    most_common_words = word_frequencies.most_common(10)  # Poți ajusta numărul de cuvinte cheie
+    return [word for word, _ in most_common_words]
 
+# Funcția pentru generarea propozițiilor cu contextul cuvintelor cheie
+def generate_sentences_with_context(keywords, original_text):
+    sentences_in_text = re.split(r'(?<=[.!?]) +', original_text)  # Împărțim textul în propoziții
+    generated_sentences = []
 
-# Functia pentru generarea propozițiilor explicative pentru fiecare cuvânt cheie
-def generate_sentences(keywords, original_text):
-    sentences = []
     for keyword in keywords:
-        # Generăm o propoziție explicativă pentru fiecare cuvânt cheie
-        if keyword in original_text:
-            sentence = f"One of the key points in the text is '{keyword}'. This word highlights an important aspect, as it contributes to the main theme of the text."
+        relevant_sentences = []
+        for sentence in sentences_in_text:
+            if keyword.lower() in sentence.lower():
+                relevant_sentences.append(sentence.strip())
+        
+        if relevant_sentences:
+            explanation = (
+                f"The term '{keyword}' plays a crucial role in the text. "
+                f"It is discussed in the context of: '{relevant_sentences[0]}'."
+            )
         else:
-            sentence = f"'{keyword}' is an important term in the text that connects various ideas and enhances the understanding of the content."
-        sentences.append(sentence)
-    return sentences
-
-
+            explanation = f"The keyword '{keyword}' is central to the theme of the text."
+        
+        generated_sentences.append(explanation)
+    
+    return generated_sentences
 
 # Integrarea în fluxul de execuție
 while not valid:
@@ -295,7 +311,11 @@ while not valid:
         valid = True
         text = input("\nIntroduceti textul: ")
         print(f"\nTextul este: {text}\n")
+        
+        # Detectarea limbii
         lang = detectare_limba(text)
+        
+        # Generarea informațiilor stilometrice
         informatii_stilometrice(text, lang)
 
         # Extragem cuvintele cheie
@@ -303,7 +323,7 @@ while not valid:
         print("\nCuvinte cheie extrase:", keywords)
 
         # Generăm propoziții pentru fiecare cuvânt cheie
-        sentences = generate_sentences(keywords, text)
+        sentences = generate_sentences_with_context(keywords, text)
         for sentence in sentences:
             print(sentence)
 
@@ -311,8 +331,14 @@ while not valid:
         valid = True
         file_path = input("\nIntroduceti calea catre fisier: ")
         print(f"\nCalea primita: {file_path}\n")
+        
+        # Citirea textului din fișier
         text = citire_fisier(file_path)
+        
+        # Detectarea limbii
         lang = detectare_limba(text)
+        
+        # Generarea informațiilor stilometrice
         informatii_stilometrice(text, lang)
 
         # Extragem cuvintele cheie
@@ -320,7 +346,7 @@ while not valid:
         print("\nCuvinte cheie extrase:", keywords)
 
         # Generăm propoziții pentru fiecare cuvânt cheie
-        sentences = generate_sentences(keywords, text)
+        sentences = generate_sentences_with_context(keywords, text)
         for sentence in sentences:
             print(sentence)
 
@@ -328,3 +354,5 @@ while not valid:
         print("\noptiune invalida!")
         valid = False
         continue
+
+
