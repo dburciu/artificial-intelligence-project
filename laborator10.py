@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 
 valid = False
 
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('punkt_tab')
+# nltk.download('punkt')
+# nltk.download('stopwords')
+# nltk.download('punkt_tab')
 
 # Generez dinamic o mapare intre codurile date de langdetec si cele suportate de nltk
 # stopwords.fileids() va returna lista cu limbile suportate de nltk
@@ -186,8 +186,8 @@ from nltk.corpus import stopwords
 from collections import Counter
 import nltk
 
-nltk.download('wordnet')
-nltk.download('omw-1.4')
+# nltk.download('wordnet')
+# nltk.download('omw-1.4')
 
 
 def get_synonyms(word):
@@ -240,22 +240,22 @@ def replace_words(text):
                 new_words[i] = random.choice(replacements)
 
     return ' '.join(new_words)
-
-
-test_text1 = "The cat has a lot of personality. She is fluffy and full of energy."
-print("Text original:", test_text1)
-alternative_text1 = replace_words(test_text1)
-print("Text alternativ:", alternative_text1)
-
-test_text2 = "I can not imagine my life without her. "
-print("Text original:", test_text2)
-alternative_text2 = replace_words(test_text2)
-print("Text alternativ:", alternative_text2)
-
-test_text3 = "This is one of the reasons I would not let go of her even for all the money in the world."
-print("Text original:", test_text3)
-alternative_text3 = replace_words(test_text3)
-print("Text alternativ:", alternative_text3)
+#
+#
+# test_text1 = "The cat has a lot of personality. She is fluffy and full of energy."
+# print("Text original:", test_text1)
+# alternative_text1 = replace_words(test_text1)
+# print("Text alternativ:", alternative_text1)
+#
+# test_text2 = "I can not imagine my life without her. "
+# print("Text original:", test_text2)
+# alternative_text2 = replace_words(test_text2)
+# print("Text alternativ:", alternative_text2)
+#
+# test_text3 = "This is one of the reasons I would not let go of her even for all the money in the world."
+# print("Text original:", test_text3)
+# alternative_text3 = replace_words(test_text3)
+# print("Text alternativ:", alternative_text3)
 
 
 
@@ -304,55 +304,55 @@ def generate_sentences_with_context(keywords, original_text):
     return generated_sentences
 
 # Integrarea în fluxul de execuție
-while not valid:
-    option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
-
-    if option.lower() == "consola":
-        valid = True
-        text = input("\nIntroduceti textul: ")
-        print(f"\nTextul este: {text}\n")
-        
-        # Detectarea limbii
-        lang = detectare_limba(text)
-        
-        # Generarea informațiilor stilometrice
-        informatii_stilometrice(text, lang)
-
-        # Extragem cuvintele cheie
-        keywords = extract_keywords(text)
-        print("\nCuvinte cheie extrase:", keywords)
-
-        # Generăm propoziții pentru fiecare cuvânt cheie
-        sentences = generate_sentences_with_context(keywords, text)
-        for sentence in sentences:
-            print(sentence)
-
-    elif option.lower() == "fisier":
-        valid = True
-        file_path = input("\nIntroduceti calea catre fisier: ")
-        print(f"\nCalea primita: {file_path}\n")
-        
-        # Citirea textului din fișier
-        text = citire_fisier(file_path)
-        
-        # Detectarea limbii
-        lang = detectare_limba(text)
-        
-        # Generarea informațiilor stilometrice
-        informatii_stilometrice(text, lang)
-
-        # Extragem cuvintele cheie
-        keywords = extract_keywords(text)
-        print("\nCuvinte cheie extrase:", keywords)
-
-        # Generăm propoziții pentru fiecare cuvânt cheie
-        sentences = generate_sentences_with_context(keywords, text)
-        for sentence in sentences:
-            print(sentence)
-
-    else:
-        print("\noptiune invalida!")
-        valid = False
-        continue
-
-
+# while not valid:
+#     option = input(f"\nCum doriti sa inserati textul? [Consola/Fisier]\n")
+#
+#     if option.lower() == "consola":
+#         valid = True
+#         text = input("\nIntroduceti textul: ")
+#         print(f"\nTextul este: {text}\n")
+#
+#         # Detectarea limbii
+#         lang = detectare_limba(text)
+#
+#         # Generarea informațiilor stilometrice
+#         informatii_stilometrice(text, lang)
+#
+#         # Extragem cuvintele cheie
+#         keywords = extract_keywords(text)
+#         print("\nCuvinte cheie extrase:", keywords)
+#
+#         # Generăm propoziții pentru fiecare cuvânt cheie
+#         sentences = generate_sentences_with_context(keywords, text)
+#         for sentence in sentences:
+#             print(sentence)
+#
+#     elif option.lower() == "fisier":
+#         valid = True
+#         file_path = input("\nIntroduceti calea catre fisier: ")
+#         print(f"\nCalea primita: {file_path}\n")
+#
+#         # Citirea textului din fișier
+#         text = citire_fisier(file_path)
+#
+#         # Detectarea limbii
+#         lang = detectare_limba(text)
+#
+#         # Generarea informațiilor stilometrice
+#         informatii_stilometrice(text, lang)
+#
+#         # Extragem cuvintele cheie
+#         keywords = extract_keywords(text)
+#         print("\nCuvinte cheie extrase:", keywords)
+#
+#         # Generăm propoziții pentru fiecare cuvânt cheie
+#         sentences = generate_sentences_with_context(keywords, text)
+#         for sentence in sentences:
+#             print(sentence)
+#
+#     else:
+#         print("\noptiune invalida!")
+#         valid = False
+#         continue
+#
+#
