@@ -6,9 +6,11 @@ import jax.numpy as jnp
 
 # Folosim GPT-2 care este disponibil in Flax
 
-model_name = "gpt2" 
+model_name = "gpt2"  
 model = FlaxGPT2LMHeadModel.from_pretrained(model_name)
 tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+
+# Setam pad_token_id pentru GPT-2
 
 tokenizer.pad_token = tokenizer.eos_token
 
@@ -29,15 +31,20 @@ race_dict = {
     "NSP": "Unkown"
 }
 
-def generate_breed_description(breed_code):
-    if breed_code not in race_dict:
+def generate_breed_description(breed_code1, breed_code2):
+    if breed_code1 not in race_dict:
         return "Rasa de pisică nu este recunoscută."
 
-    breed_name = race_dict[breed_code]
+    breed_name1 = race_dict[breed_code1]
+
+    if breed_code2 not in race_dict:
+        return "Rasa de pisică nu este recunoscută."
+
+    breed_name2 = race_dict[breed_code2]
 
     # Alcatuim promptul care va genera raspunsul 
 
-    prompt = f"Tell me the most important traits of {breed_name} cats."
+    prompt = f"Describe {breed_name1} and {breed_name2} cats. Compare them and specify their behavioral and physical traits."
 
 
     # Impartim promptul in tokeni
@@ -50,17 +57,17 @@ def generate_breed_description(breed_code):
 
     outputs = model.generate(input_ids, 
                              attention_mask=attention_mask, 
-                             max_length=150,  # Limitam lungimea la 150 de tokenuri
+                             max_length=150,  # Setam lungimea la 150 de tokenuri
                              pad_token_id=tokenizer.pad_token_id,
                              do_sample=True,  # Permitem generarea aleatorie a textului
-                             temperature=0.5,  # Temperatura mai scazuta pentru mai putina aleatorizare
+                             temperature=0.5,  # Temperatura mai scăzuta pentru mai putina aleatorizare
                              top_p=0.85,        # top_p mai scazut pentru a reduce diversitatea extreme
                              top_k=50,         # Setam top_k pentru limitarea alegerii
                              num_return_sequences=1)  # Doar o secventa generata
 
     # accesam secventa pe care am generat-o
 
-    generated_tokens = outputs.sequences[0] 
+    generated_tokens = outputs.sequences[0]  
 
     # Traduce tokenii in text
 
@@ -72,5 +79,5 @@ def generate_breed_description(breed_code):
 
     return description
 
-# print(generate_breed_description("PER"))
+# print(generate_breed_description("PER", "EUR"))
 
