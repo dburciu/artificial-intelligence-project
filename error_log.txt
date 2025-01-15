@@ -1,17 +1,17 @@
-Valori lipsa pe coloane:
+Valori lipsă pe coloane:
 Plus    2323
 dtype: int64
 
-Randuri duplicate 'Row.names':
+Rânduri duplicate 'Row.names':
 [999]
 
-Randuri identice (search fara campurile 'Horodateur' si 'Row.names'):
-Randurile identice: [2548, 2549]
-Randurile identice: [999, 999]
-Randurile identice: [1222, 1225]
-Randurile identice: [1199, 1219, 1221]
-Randuri identice (search fara campurile 'Horodateur', 'Row.names' si 'Plus'):
-Randurile identice: [2548, 2549]
-Randurile identice: [999, 999]
-Randurile identice: [1222, 1225]
-Randurile identice: [1199, 1219, 1221]
+Rânduri identice (căutare fără câmpurile 'Horodateur' și 'Row.names'):
+Rândurile identice: [1721, 1722]
+Rândurile identice: [3142, 3143]
+Rândurile identice: [249, 252]
+Rândurile identice: [222, 245, 248]
+Rânduri identice (căutare fără câmpurile 'Horodateur', 'Row.names' și 'Plus'):
+Rândurile identice: [1721, 1722]
+Rândurile identice: [3142, 3143]
+Rândurile identice: [249, 252]
+Rândurile identice: [222, 245, 248]

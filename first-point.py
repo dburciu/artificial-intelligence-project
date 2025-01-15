@@ -3,10 +3,10 @@ import pandas as pd
 def verifica_datele(file_path):
     df = pd.read_excel(file_path)
 
-    # Verificarea valorilor lipsa
+    # Verificarea valorilor lipsă
     missing_values = df.isnull().sum()
     if missing_values.any():
-        print("Valori lipsa pe coloana:")
+        print("Valori lipsă pe coloană:")
         print(missing_values[missing_values > 0])
 
     # Verificarea coloanelor duplicate
@@ -15,51 +15,55 @@ def verifica_datele(file_path):
         print("\nColoane duplicate:")
         print(duplicate_columns)
 
-    # Verificarea randurilor duplicate pe baza Row.names
+    # Verificarea rândurilor duplicate pe baza Row.names
     if 'Row.names' in df.columns:
         duplicate_row_names = df['Row.names'][df['Row.names'].duplicated()]
         if len(duplicate_row_names) > 0:
-            print("\nRanduri duplicate 'Row.names':")
-            print(duplicate_row_names.values)  # Afiseaza doar numerele randurilor duplicate
+            print("\nRânduri duplicate 'Row.names':")
+            print(duplicate_row_names.values)  # Afișează doar numerele rândurilor duplicate
 
-    # Verificarea randurilor identice dupa toate campurile (fara Horodateur si Row.names)
+    # Verificarea rândurilor identice după toate câmpurile (fără Horodateur și Row.names)
     fields_to_exclude = ['Horodateur', 'Row.names']
-    df_comparable = df.drop(columns=fields_to_exclude, errors='ignore')  # Creeaza un dataframe fara aceste coloane
+    df_comparable = df.drop(columns=fields_to_exclude, errors='ignore')  # Creează un dataframe fără aceste coloane
 
-    # Identificarea randurilor duplicate
-    duplicate_mask = df_comparable.duplicated(keep=False)  # Flag pentru toate randurile duplicate (inclusiv primul din grup)
-    duplicate_rows_all_fields = df[duplicate_mask]  # Selectarea randurilor duplicate
-
-    if not duplicate_rows_all_fields.empty:
-        print("\nRanduri identice (dupa toate campurile, fara 'Horodateur' si 'Row.names'):")
-        
-        # Gruparea si afisarea randurilor care sunt duplicate intre ele
-        grouped_duplicates = df_comparable[duplicate_mask].groupby(list(df_comparable.columns)).apply(lambda x: list(df.loc[x.index, 'Row.names']))
-        
-        for group in grouped_duplicates:
-            print(f"Randurile identice: {group}")
-
-    # Verificarea randurilor identice dupa toate campurile (fara Horodateur, Row.names si Plus)
-    fields_to_exclude.append('Plus')  # Adauga 'Plus' la excluderi
-    df_comparable = df.drop(columns=fields_to_exclude, errors='ignore')  # Creeaza un dataframe fara aceste coloane
-
-    # Identificarea randurilor duplicate
-    duplicate_mask = df_comparable.duplicated(keep=False)  # Flag pentru toate randurile duplicate (inclusiv primul din grup)
-    duplicate_rows_all_fields = df[duplicate_mask]  # Selectarea randurilor duplicate
+    # Identificarea rândurilor duplicate
+    duplicate_mask = df_comparable.duplicated(keep=False)  # Flag pentru toate rândurile duplicate (inclusiv primul din grup)
+    duplicate_rows_all_fields = df[duplicate_mask]  # Selectarea rândurilor duplicate
 
     if not duplicate_rows_all_fields.empty:
-        print("\nRanduri identice (dupa toate campurile, fara 'Horodateur', 'Row.names' si 'Plus'):")
+        print("\nRânduri identice (după toate câmpurile, fără 'Horodateur' și 'Row.names'):")
         
-        # Gruparea si afisarea randurilor care sunt duplicate intre ele
-        grouped_duplicates = df_comparable[duplicate_mask].groupby(list(df_comparable.columns)).apply(lambda x: list(df.loc[x.index, 'Row.names']))
+        # Gruparea și afișarea rândurilor care sunt duplicate între ele
+        grouped_duplicates = df_comparable[duplicate_mask].groupby(list(df_comparable.columns), group_keys=False).apply(
+            lambda x: list(x.index)
+        )
         
         for group in grouped_duplicates:
-            print(f"Randurile identice: {group}")
+            print(f"Rândurile identice: {group}")
 
-    # Salvarea erorilor intr-un fisier de log doar daca exista erori
+    # Verificarea rândurilor identice după toate câmpurile (fără Horodateur, Row.names și Plus)
+    fields_to_exclude.append('Plus')  # Adaugă 'Plus' la excluderi
+    df_comparable = df.drop(columns=fields_to_exclude, errors='ignore')  # Creează un dataframe fără aceste coloane
+
+    # Identificarea rândurilor duplicate
+    duplicate_mask = df_comparable.duplicated(keep=False)  # Flag pentru toate rândurile duplicate (inclusiv primul din grup)
+    duplicate_rows_all_fields = df[duplicate_mask]  # Selectarea rândurilor duplicate
+
+    if not duplicate_rows_all_fields.empty:
+        print("\nRânduri identice (după toate câmpurile, fără 'Horodateur', 'Row.names' și 'Plus'):")
+        
+        # Gruparea și afișarea rândurilor care sunt duplicate între ele
+        grouped_duplicates = df_comparable[duplicate_mask].groupby(list(df_comparable.columns), group_keys=False).apply(
+            lambda x: list(x.index)
+        )
+        
+        for group in grouped_duplicates:
+            print(f"Rândurile identice: {group}")
+
+    # Salvarea erorilor într-un fișier de log doar dacă există erori
     with open('error_log.txt', 'w', encoding='utf-8') as f:
         if missing_values.any():
-            f.write("Valori lipsa pe coloane:\n")
+            f.write("Valori lipsă pe coloane:\n")
             f.write(str(missing_values[missing_values > 0]) + '\n\n')
         
         if len(duplicate_columns) > 0:
@@ -67,19 +71,19 @@ def verifica_datele(file_path):
             f.write(str(duplicate_columns) + '\n\n')
         
         if 'Row.names' in df.columns and len(duplicate_row_names) > 0:
-            f.write("Randuri duplicate 'Row.names':\n")
+            f.write("Rânduri duplicate 'Row.names':\n")
             f.write(str(duplicate_row_names.values) + '\n\n')
         
         if not duplicate_rows_all_fields.empty:
-            f.write("Randuri identice (search fara campurile 'Horodateur' si 'Row.names'):\n")
+            f.write("Rânduri identice (căutare fără câmpurile 'Horodateur' și 'Row.names'):\n")
             for group in grouped_duplicates:
-                f.write(f"Randurile identice: {group}\n")
+                f.write(f"Rândurile identice: {group}\n")
         
-        # Adaugam si log pentru randurile identice fara 'Horodateur', 'Row.names' si 'Plus'
+        # Adăugăm și log pentru rândurile identice fără 'Horodateur', 'Row.names' și 'Plus'
         if not duplicate_rows_all_fields.empty:
-            f.write("Randuri identice (search fara campurile 'Horodateur', 'Row.names' si 'Plus'):\n")
+            f.write("Rânduri identice (căutare fără câmpurile 'Horodateur', 'Row.names' și 'Plus'):\n")
             for group in grouped_duplicates:
-                f.write(f"Randurile identice: {group}\n")
+                f.write(f"Rândurile identice: {group}\n")
 
 if __name__ == "__main__":
     file_path = "Data cat personality and predation Cordonnier et al.xlsx"
