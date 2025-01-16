@@ -10,7 +10,7 @@ from laborator10 import get_synonyms, get_antonyms, get_hypernyms
 # pip install spacy
 # python -m spacy download en_core_web_sm
 
-data = pd.read_excel('Data cat personality and predation Cordonnier et al.xlsx')
+data = pd.read_excel('Data cat personality and predation Cordonnier et al_en.xlsx')
 
 race_dict = {
     "BEN": "Bengal",
@@ -177,12 +177,6 @@ def dominant_race(data, race_col, attribute_col, attribute_value):
     """
     Identify the race with the highest percentage for a specific attribute value.
 
-    Args:
-    - data: DataFrame containing the dataset.
-    - race_col: Name of the column representing the race.
-    - attribute_col: Name of the column representing the attribute.
-    - attribute_value: Value of the attribute to filter.
-
     Returns:
     - The race with the highest percentage or None if no match.
     """
@@ -219,3 +213,4 @@ def predict_race(description, data, race_col="Race", attributes=None):
 description = "A male cat that is 2-10 years old, lives in an apartment, and is medium-sized with spotted orange fur."
 predicted_breed = predict_race(description, data)
 print(f"The predicted breed is: {predicted_breed}")
+
