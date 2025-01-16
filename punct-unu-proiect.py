@@ -7,6 +7,7 @@ from faker import Faker
 # Ignorarea tuturor warning-urilor
 warnings.filterwarnings("ignore")
 
+
 # Funcție pentru a traduce o celulă
 def translate_cell(cell, source_lang='fr', target_lang='ro'):
     if isinstance(cell, str):
@@ -14,6 +15,7 @@ def translate_cell(cell, source_lang='fr', target_lang='ro'):
         return translator.translate(cell)
     else:
         return cell
+
 
 # Funcția de traducere a titlurilor coloanelor
 def traduce_titluri(df, source_lang='fr', target_lang='ro'):
@@ -26,6 +28,7 @@ def traduce_titluri(df, source_lang='fr', target_lang='ro'):
             translated_columns[col] = col  # Păstrează "Plus" netradus
     return df.rename(columns=translated_columns)
 
+
 # Funcție pentru a verifica dacă documentul este deja tradus
 def document_deja_tradus(df, source_lang='fr', target_lang='ro'):
     for col in df.columns:
@@ -34,6 +37,7 @@ def document_deja_tradus(df, source_lang='fr', target_lang='ro'):
             if translated_title == col:
                 return True
     return False
+
 
 # Funcție pentru a verifica duplicatele (ignora coloana "Plus")
 def verifica_duplicate(df):
@@ -45,6 +49,7 @@ def verifica_duplicate(df):
         print("\nRânduri duplicate:")
         print(duplicate_rows)
 
+
 # Funcție pentru a verifica linii identice (ignorând prima coloană, a doua coloană și coloana "Plus")
 def verifica_identice(df):
     df_comparable = df.drop(columns=[df.columns[0], df.columns[1], "Plus"], errors="ignore")
@@ -54,6 +59,7 @@ def verifica_identice(df):
     if not duplicate_rows.empty:
         print("\nRânduri identice (ignorând prima coloană, a doua coloană și coloana 'Plus'):")
         print(duplicate_rows)
+
 
 # Funcție pentru a genera și adăuga linii noi
 def adauga_intrari_noi(file_path):
@@ -88,6 +94,7 @@ def adauga_intrari_noi(file_path):
     except Exception as e:
         print(f"Eroare la salvarea fișierului: {e}")
 
+
 # Funcție de generare a valorilor pentru fiecare coloană în funcție de specificații
 def generate_value_by_position(col_index, fake):
     # Definirea generatorilor pentru fiecare coloană, în funcție de index
@@ -96,7 +103,8 @@ def generate_value_by_position(col_index, fake):
         1: lambda: fake.date_time_this_decade().strftime('%d/%m/%Y %I:%M:%S %p'),
         2: lambda: random.choice(['M', 'F']),
         3: lambda: random.choice(['Moinsde1', '1a2', '2a10', 'Plusde10']),
-        4: lambda: random.choice(['BEN', 'SBI', 'BRI', 'CHA', 'EUR', 'MCO', 'PER', 'RAG', 'SPH', 'ORI', 'TUV', 'Autre', 'NSP']),
+        4: lambda: random.choice(
+            ['BEN', 'SBI', 'BRI', 'CHA', 'EUR', 'MCO', 'PER', 'RAG', 'SPH', 'ORI', 'TUV', 'Autre', 'NSP']),
         5: lambda: random.randint(1, 5),
         6: lambda: random.choice(['ASB', 'AAB', 'ML', 'MI']),
         7: lambda: random.choice(['U', 'PU', 'R']),
@@ -130,6 +138,7 @@ def generate_value_by_position(col_index, fake):
         print(f"Coloana {col_index} nu este definită în generatori!")
         return None  # Returnează None dacă coloana nu există în dict
 
+
 # Funcție principală pentru a modifica traducerea
 def modifica_traducerea(file_path, source_lang='fr', target_lang='ro'):
     df = pd.read_excel(file_path)
@@ -155,6 +164,7 @@ def modifica_traducerea(file_path, source_lang='fr', target_lang='ro'):
 
     # Salvează DataFrame-ul tradus în fișierul Excel
     df.to_excel(file_path, index=False)
+
 
 if __name__ == "__main__":
     file_path = "Data cat personality and predation Cordonnier et al.xlsx"
