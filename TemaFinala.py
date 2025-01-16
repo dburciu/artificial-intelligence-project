@@ -6,10 +6,6 @@ import spacy
 import pandas as pd
 from laborator10 import get_synonyms, get_antonyms, get_hypernyms
 
-# AVETI NEVOIE DE
-# pip install spacy
-# python -m spacy download en_core_web_sm
-
 data = pd.read_excel('Data cat personality and predation Cordonnier et al_en.xlsx')
 
 race_dict = {
@@ -22,7 +18,7 @@ race_dict = {
     "PER": "Persian",
     "RAG": "Ragdoll",
     "SPH": "Sphynx",
-    "SAV": "Savannah",  #nu exista mentionata SVA
+    "SAV": "Savannah",
     "ORI": "Sphynx",
     "TUV": "Turkish angora",
     "Autre": "No Breed/ Other",
@@ -38,6 +34,21 @@ def all_options(word):
     options = get_hypernyms(word) + get_synonyms(word) + get_antonyms(word)
     return list(set(options))
 
+
+personality_traits = [
+    "Timide", "Calme", "Effraye", "Intelligent", "Vigilant", "Perseverant", "Affectueux", "Amical",
+    "Solitaire", "Brutal", "Dominant", "Agressif", "Impulsif", "Previsible", "Distrait"
+]
+
+personality_options = {}
+for trait in personality_traits:
+    personality_options[trait] = {
+        "1": all_options(f"not {trait.lower()}") + ["not", "very low"],
+        "2": all_options(f"slightly {trait.lower()}") + ["slightly", "low"],
+        "3": all_options(f"moderately {trait.lower()}") + ["moderate"],
+        "4": all_options(f"quite {trait.lower()}") + ["quite", "high"],
+        "5": all_options(f"very {trait.lower()}") + ["very", "extremely high"]
+    }
 
 # Sexe variable
 
@@ -120,6 +131,8 @@ def extract_attributes(description):
     }
 
     for token in doc:
+        for trait in personality_traits:
+            attributes[trait] = None
 
         if token.text.lower() in sexe_options:
             attributes["Sexe"] = "M" if token.text.lower() in male_options else "F"
@@ -143,8 +156,8 @@ def extract_attributes(description):
                 attributes["Zone"] = "PU"
             else:
                 attributes["Zone"] = "R"
-    # a way to differenciate between time spent outdoors and time
-    # spent with the cat in the context of the description?
+        # a way to differenciate between time spent outdoors and time
+        # spent with the cat in the context of the description?
         if token.text.lower() in time_spent:
             if token.text.lower() in none:
                 attributes["Ext"] = "1"
@@ -165,10 +178,10 @@ def extract_attributes(description):
                 attributes["Obs"] = "3"
             else:
                 attributes["Obs"] = "4"
-
-        # a way to differenciate between catching birds frequency
-        # and catching small mammals frequency
-        # in the context of the description?
+        for trait, levels in personality_options.items():
+            for level, options in levels.items():
+                if token.text.lower() in options:
+                    attributes[trait] = level
 
     return attributes
 
@@ -190,9 +203,11 @@ def dominant_race(data, race_col, attribute_col, attribute_value):
 
 
 def predict_race(description, data, race_col="Race", attributes=None):
-    if attributes is None:
-        attributes = ["Sexe", "Age", "Logement", "Zone", "Ext", "Obs", "Abondance", "PredOiseau", "PredMamm"]
 
+    if attributes is None:
+        attributes = [
+                         "Sexe", "Age", "Logement", "Zone", "Ext", "Obs", "Abondance", "PredOiseau", "PredMamm"
+                     ] + personality_traits
     extracted_attributes = extract_attributes(description)
     race_scores = {}
 
@@ -213,4 +228,3 @@ def predict_race(description, data, race_col="Race", attributes=None):
 description = "A male cat that is 2-10 years old, lives in an apartment, and is medium-sized with spotted orange fur."
 predicted_breed = predict_race(description, data)
 print(f"The predicted breed is: {predicted_breed}")
-
