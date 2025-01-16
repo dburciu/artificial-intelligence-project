@@ -3,6 +3,7 @@ from deep_translator import GoogleTranslator
 import warnings
 import random
 from faker import Faker
+import spacy
 
 # Ignorarea tuturor warning-urilor
 warnings.filterwarnings("ignore")
@@ -55,41 +56,39 @@ def verifica_identice(df):
         print("\nRânduri identice (ignorând prima coloană, a doua coloană și coloana 'Plus'):")
         print(duplicate_rows)
 
-# Funcție pentru a genera și adăuga linii noi
-def adauga_intrari_noi(file_path):
-    fake = Faker()
-    df = pd.read_excel(file_path)
+# Funcție pentru a genera propoziții folosind Spacy
+def genereaza_propozitii(cuvinte, numar_propozitii=5):
+    nlp = spacy.load("en_core_web_sm")  # Încărcăm modelul de limbă
+    text_combined = " ".join(cuvinte)
+    doc = nlp(text_combined)
 
-    # Întreabă utilizatorul dacă dorește să adăuge intrări noi
-    raspuns = input("Doriți să adăugați intrări noi? (da/nu): ").strip().lower()
-    if raspuns != 'da':
-        print("Nu se vor adăuga intrări noi.")
-        return
+    sentences = []
+    for _ in range(numar_propozitii):
+        subject = random.choice([token.text for token in doc if token.pos_ == "NOUN"])
+        verb = random.choice([token.text for token in doc if token.pos_ == "VERB"])
+        complement = random.choice([token.text for token in doc if token.pos_ in {"NOUN", "PROPN"}])
+        adverb = random.choice([token.text for token in doc if token.pos_ == "ADV"] + [None])
+        adjective = random.choice([token.text for token in doc if token.pos_ == "ADJ"] + [None])
 
-    # Solicită numărul de intrări de adăugat
-    try:
-        nr_intrari = int(input("Introduceți numărul de intrări noi de adăugat: ").strip())
-    except ValueError:
-        print("Valoare invalidă. Operațiunea a fost anulată.")
-        return
+        # Propoziții scurte: subiect + verb + complement
+        if random.random() < 0.5:  # 50% șanse de propoziție scurtă
+            propozitie = f"{subject.capitalize()} {verb} {complement}."
+        else:
+            if adverb and adjective:
+                propozitie = f"{subject.capitalize()} {verb} {complement} {adverb} și {adjective}."
+            elif adverb:
+                propozitie = f"{subject.capitalize()} {verb} {complement} {adverb}."
+            elif adjective:
+                propozitie = f"{subject.capitalize()} {verb} {complement} {adjective}."
+            else:
+                propozitie = f"{subject.capitalize()} {verb} {complement}."
 
-    # Generare de noi intrări conform specificațiilor
-    for _ in range(nr_intrari):
-        new_row = {}
-        for col_index in range(len(df.columns)):
-            new_row[df.columns[col_index]] = generate_value_by_position(col_index, fake)
-        print(f"Intrare adăugată:\n{new_row}")  # Afișăm intrarea adăugată în terminal
-        df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-
-    # Salvează DataFrame-ul actualizat
-    try:
-        df.to_excel(file_path, index=False)
-        print(f"{nr_intrari} intrări noi au fost adăugate cu succes.")
-    except Exception as e:
-        print(f"Eroare la salvarea fișierului: {e}")
+        sentences.append(propozitie)
+    
+    return sentences
 
 # Funcție de generare a valorilor pentru fiecare coloană în funcție de specificații
-def generate_value_by_position(col_index, fake):
+def generate_value_by_position(col_index, fake, cuvinte=None):
     # Definirea generatorilor pentru fiecare coloană, în funcție de index
     column_generators = {
         0: lambda: random.randint(4000, 10000),
@@ -120,15 +119,54 @@ def generate_value_by_position(col_index, fake):
         25: lambda: random.choice(['1', '2', '3', 'NSP']),
         26: lambda: random.randint(1, 5),
         27: lambda: random.randint(1, 5),
+        28: lambda: random.choice(genereaza_propozitii(cuvinte)) if cuvinte else 'Propoziție necompletată',
     }
 
     # Verificăm dacă indexul coloanei este definit în generatori
     if col_index in column_generators:
-        # print(f"Generează valoare pentru coloana {col_index}")  # Afișează în terminal
         return column_generators[col_index]()  # Returnează valoarea generată
     else:
         print(f"Coloana {col_index} nu este definită în generatori!")
         return None  # Returnează None dacă coloana nu există în dict
+
+# Funcție pentru a adăuga intrări noi în fișierul Excel
+def adauga_intrari_noi(file_path):
+    fake = Faker()
+    df = pd.read_excel(file_path)
+
+    # Întreabă utilizatorul dacă dorește să adăuge intrări noi
+    raspuns = input("Doriți să adăugați intrări noi? (da/nu): ").strip().lower()
+    if raspuns != 'da':
+        print("Nu se vor adăuga intrări noi.")
+        return
+
+    # Solicită numărul de intrări de adăugat
+    try:
+        nr_intrari = int(input("Introduceți numărul de intrări noi de adăugat: ").strip())
+    except ValueError:
+        print("Valoare invalidă. Operațiunea a fost anulată.")
+        return
+
+    # Extragem cuvintele din campul 28 pentru a le folosi la generarea propozițiilor
+    cuvinte = []
+    for valoare in df.iloc[:, 28].dropna():
+        if isinstance(valoare, str):  # Verificăm dacă este un text
+            cuvinte.extend(valoare.split())
+
+    # Generăm și adăugăm linii noi conform specificațiilor
+    for _ in range(nr_intrari):
+        new_row = {}
+        for col_index in range(len(df.columns)):
+            new_row[df.columns[col_index]] = generate_value_by_position(col_index, fake, cuvinte)
+        print(f"Intrare adăugată:\n{new_row}")  # Afișăm intrarea adăugată în terminal
+        df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+
+    # Salvează DataFrame-ul actualizat
+    try:
+        df.to_excel(file_path, index=False)
+        print(f"{nr_intrari} intrări noi au fost adăugate cu succes.")
+    except Exception as e:
+        print(f"Eroare la salvarea fișierului: {e}")
 
 # Funcție principală pentru a modifica traducerea
 def modifica_traducerea(file_path, source_lang='fr', target_lang='ro'):
